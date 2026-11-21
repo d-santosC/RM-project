@@ -45,7 +45,7 @@ def main():
         # x2 = x1 + box_size
         # y2 = y1 + box_size
 
-        box_w, box_h = 500, 150
+        box_w, box_h = 500, 300
         x1 = (w - box_w) // 2
         y1 = (h - box_h) // 2
         x2 = x1 + box_w
@@ -69,7 +69,7 @@ def main():
 
         #remover pequenos pontos de ruido
         kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3))
-        thresh = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, kernel)
+        thresh = cv2.adaptiveThreshold(blurred,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY_INV,151,3)
 
         recognized_text = ""
 
@@ -127,6 +127,8 @@ def main():
                 print("OCR Error:", e)
 
             cv2.imshow("Processed Word", ocr_image)
+            cv2.namedWindow("Processed Word", cv2.WINDOW_NORMAL)
+            cv2.resizeWindow("Processed Word", 600, 200)
 
         #feedback visual
         color = (0, 255, 0) if recognized_text else (255, 0, 0)
